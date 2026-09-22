@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guía Acreditación Supervisor · INASEP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --verde:     #1A4226;
+      --verde-md:  #245C35;
+      --verde-lt:  #EBF2EC;
+      --dorado:    #C9A84C;
+      --dorado-dk: #A88430;
+      --dorado-lt: #FAF3E0;
+      --blanco:    #FFFFFF;
+      --fondo:     #F5F6F3;
+      --txt:       #2C3528;
+      --txt-sm:    #5A6354;
+      --brd:       #D0D9D2;
+      --rojo:      #B03030;
+      --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 22px;
+      --sh-sm: 0 1px 2px rgba(26,66,38,.05);
+      --sh-md: 0 1px 2px rgba(26,66,38,.04), 0 12px 28px -12px rgba(26,66,38,.14);
+      --sh-lg: 0 20px 44px -18px rgba(26,66,38,.28);
+      --ease: cubic-bezier(.4,0,.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--fondo); color: var(--txt); line-height: 1.75; font-size: 17px; -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--dorado); color: var(--verde); }
+    a { color: inherit; }
+    :focus-visible { outline: 2.5px solid var(--dorado-dk); outline-offset: 2px; border-radius: 4px; }
+
+    /* BANNER */
+    .banner-cursos { background: var(--dorado); padding: .7rem 1.2rem; text-align: center; font-size: .88rem; font-weight: 600; color: var(--verde); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem .8rem; }
+    .banner-cursos a { color: var(--verde); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+    .banner-cursos a:hover { color: #0f2918; }
+
+    /* HERO */
+    .hero { background: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(201,168,76,.14), transparent 60%), linear-gradient(180deg, #1d4a2a 0%, var(--verde) 55%, #163a24 100%); color: var(--blanco); padding: 3.8rem 1.5rem 3.2rem; text-align: center; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, transparent, var(--dorado), transparent); }
+    .hero-logo { width: 96px; height: 96px; border-radius: 16px; border: 2px solid var(--dorado); object-fit: contain; background: var(--blanco); margin-bottom: 1.4rem; box-shadow: 0 4px 24px rgba(0,0,0,.3); display: block; margin-left: auto; margin-right: auto; }
+    .hero-eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--dorado); margin-bottom: .9rem; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 4.5vw, 2.8rem); line-height: 1.2; color: var(--blanco); max-width: 640px; margin: 0 auto .6rem; }
+    .hero h1 em { font-style: italic; color: var(--dorado); }
+    .hero-desc { font-size: 1rem; font-weight: 300; max-width: 560px; margin: 0 auto 1.6rem; opacity: .8; line-height: 1.6; }
+    .hero-aviso { display: inline-block; background: rgba(201,168,76,.15); border: 1px solid rgba(201,168,76,.35); border-radius: 8px; padding: .7rem 1.2rem; font-size: .88rem; color: rgba(255,255,255,.9); max-width: 580px; }
+    .hero-aviso strong { color: var(--dorado); }
+
+    /* RESUMEN */
+    .resumen { background: var(--verde-md); display: flex; justify-content: center; text-align: center; }
+    .resumen-item { padding: .9rem .8rem; }
+    .resumen-num { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--dorado); line-height: 1; display: inline; }
+    .resumen-label { font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.8); margin-top: .25rem; }
+
+    /* CURSOS */
+    .seccion-cursos { background: var(--blanco); border-bottom: 1px solid var(--brd); padding: 2.5rem 1.5rem; }
+    .seccion-cursos-inner { max-width: 860px; margin: 0 auto; text-align: center; }
+    .seccion-cursos h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--verde); margin-bottom: .4rem; }
+    .seccion-cursos p { font-size: .95rem; color: var(--txt-sm); max-width: 560px; margin: 0 auto 1.6rem; }
+    .cursos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.6rem; }
+    @media (max-width: 540px) { .cursos-grid { grid-template-columns: 1fr; } }
+    .curso-card { background: var(--verde-lt); border: 1px solid #bcd4c2; border-radius: 12px; padding: 1.2rem 1rem; text-align: left; text-decoration: none; color: var(--txt); transition: box-shadow .2s, transform .15s; display: block; }
+    .curso-card:hover { box-shadow: 0 6px 22px rgba(26,66,38,.12); transform: translateY(-2px); }
+    .curso-card .curso-tag { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--verde-md); background: rgba(26,66,38,.1); display: inline-block; padding: .2rem .6rem; border-radius: 4px; margin-bottom: .6rem; }
+    .curso-card h3 { font-size: 1rem; font-weight: 700; color: var(--verde); line-height: 1.3; margin-bottom: .3rem; }
+    .curso-card p { font-size: .85rem; color: var(--txt-sm); margin: 0; }
+    .btn-wa { display: inline-flex; align-items: center; gap: .65rem; background: #25D366; color: var(--blanco); text-decoration: none; font-size: 1rem; font-weight: 700; padding: .85rem 1.8rem; border-radius: 100px; box-shadow: 0 4px 16px rgba(37,211,102,.35); transition: background .2s, transform .15s, box-shadow .2s; }
+    .btn-wa:hover { background: #1DB954; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,.4); }
+    .btn-wa svg { flex-shrink: 0; }
+    .btn-wa-sub { font-size: .8rem; font-weight: 400; opacity: .85; margin-top: .2rem; display: block; }
+
+    /* CONTENEDOR */
+    .container { max-width: 1020px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+    .section-label { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.8rem; }
+    .section-label span { font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--dorado-dk); white-space: nowrap; }
+    .section-label::before, .section-label::after { content: ''; flex: 1; height: 1px; background: var(--brd); }
+
+    /* PASO */
+    .paso { background: var(--blanco); border-radius: 18px; margin-bottom: 2.2rem; border: 1px solid var(--brd); box-shadow: var(--sh-md); overflow: hidden; transition: box-shadow .25s var(--ease), opacity .6s var(--ease), transform .6s var(--ease); }
+    .paso.oculto { opacity: 0; transform: translateY(18px); }
+    .paso:hover { box-shadow: var(--sh-lg); }
+    .paso-header { background: linear-gradient(135deg, var(--verde) 0%, #163a24 100%); padding: 1.35rem 1.7rem; display: flex; align-items: center; gap: 1.2rem; position: relative; }
+    .paso-num { min-width: 46px; height: 46px; background: linear-gradient(160deg, #e0c56c, var(--dorado) 60%, var(--dorado-dk)); color: var(--verde); border-radius: 12px; font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 3px 10px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.4); }
+    .paso-titles { flex: 1; }
+    .paso-title { color: var(--blanco); font-size: 1.08rem; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; }
+    .paso-subtitle { color: rgba(255,255,255,.62); font-size: .82rem; margin-top: .2rem; font-weight: 400; }
+    .paso-body { padding: 1.8rem 1.8rem 1.9rem; }
+    .instruccion { font-size: 1rem; margin-bottom: 1rem; color: var(--txt); line-height: 1.7; }
+    .instruccion strong { color: var(--verde); }
+    .instruccion a { color: var(--verde-md); }
+
+    /* CAPTURA */
+    .captura { border-radius: 12px; overflow: hidden; border: 1px solid var(--brd); margin: 1.4rem -1.8rem 0; background: #eef0ec; position: relative; }
+    .captura:first-child { margin-top: -1.8rem; border-radius: 0; border-left: none; border-right: none; border-top: none; }
+    .captura img { width: 100%; max-width: 100%; display: block; cursor: zoom-in; transition: filter .2s; }
+    .captura:hover img { filter: brightness(1.02); }
+    .captura-label { font-size: .74rem; color: var(--txt-sm); padding: .55rem 1rem; background: var(--fondo); border-top: 1px solid var(--brd); letter-spacing: .06em; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
+    .captura-label::after { content: '🔍 Ampliar'; text-transform: none; letter-spacing: 0; font-size: .72rem; color: var(--verde-md); font-weight: 600; white-space: nowrap; }
+
+    /* LIGHTBOX */
+    .lightbox { position: fixed; inset: 0; background: rgba(12,20,14,.92); display: none; align-items: center; justify-content: center; z-index: 100; padding: 3rem 1.2rem; cursor: zoom-out; }
+    .lightbox.abierto { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .lightbox-cerrar { position: absolute; top: 1.2rem; right: 1.4rem; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); color: var(--blanco); font-size: 1.3rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+    /* DOCS */
+    .docs-list { list-style: none; display: flex; flex-direction: column; gap: .7rem; margin: 1.2rem 0; }
+    .docs-list li { display: flex; flex-direction: column; align-items: stretch; padding: .95rem 1.15rem; border-radius: 11px; background: var(--fondo); border: 1px solid var(--brd); font-size: .95rem; transition: box-shadow .2s, transform .15s; }
+    .docs-list li:hover { box-shadow: 0 6px 16px rgba(26,66,38,.08); transform: translateY(-1px); }
+    .docs-list li.obl { border-left: 4px solid var(--verde); }
+    .docs-list li.opt { border-left: 4px solid var(--dorado); }
+    .doc-row { display: flex; align-items: flex-start; gap: .9rem; width: 100%; }
+    .docs-icon { font-size: 1.05rem; flex-shrink: 0; margin-top: .05rem; width: 34px; height: 34px; border-radius: 9px; background: rgba(26,66,38,.06); display: flex; align-items: center; justify-content: center; }
+    .doc-info { flex: 1; min-width: 0; }
+    .doc-name { font-weight: 700; color: var(--verde); margin-bottom: .2rem; letter-spacing: -.005em; }
+    .doc-desc { font-size: .85rem; color: var(--txt-sm); line-height: 1.55; }
+    .badge-o { font-size: .64rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; background: var(--verde); color: var(--blanco); padding: .28rem .65rem; border-radius: 100px; white-space: nowrap; align-self: flex-start; flex-shrink: 0; margin-top: .1rem; }
+    .badge-p { font-size: .64rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; background: var(--dorado-lt); color: var(--dorado-dk); border: 1px solid #e2cd8a; padding: .28rem .65rem; border-radius: 100px; white-space: nowrap; align-self: flex-start; flex-shrink: 0; margin-top: .1rem; }
+
+    /* BOTÓN DESCARGA */
+    .btn-dl { display: inline-flex; align-items: center; gap: .5rem; background: var(--verde); color: var(--blanco); text-decoration: none; font-size: .82rem; font-weight: 600; padding: .55rem 1.1rem; border-radius: var(--r-sm); margin-top: .6rem; box-shadow: 0 2px 8px rgba(26,66,38,.18); transition: background .2s var(--ease), transform .15s var(--ease), box-shadow .2s var(--ease); border: none; cursor: pointer; }
+    .btn-dl:hover { background: var(--verde-md); transform: translateY(-1px); box-shadow: 0 5px 14px rgba(26,66,38,.24); }
+    .btn-firma { display: inline-flex; align-items: center; gap: .5rem; background: var(--dorado); color: var(--verde); text-decoration: none; font-size: .82rem; font-weight: 700; padding: .55rem 1.1rem; border-radius: var(--r-sm); margin-top: .6rem; margin-left: .5rem; box-shadow: 0 2px 8px rgba(169,132,48,.25); transition: background .2s var(--ease), transform .15s var(--ease); }
+    .btn-firma:hover { background: var(--dorado-dk); color: var(--blanco); transform: translateY(-1px); }
+
+    /* ALERTAS */
+    .alerta, .alerta-roja { border-radius: var(--r-md); padding: 1.05rem 1.25rem; font-size: .93rem; margin: 1.2rem 0; line-height: 1.6; }
+    .alerta { background: linear-gradient(180deg, #FFFBEB, #FFF8E0); border: 1px solid #EAD48A; border-left: 4px solid var(--dorado); }
+    .alerta strong { display: block; margin-bottom: .2rem; color: #8a6a00; }
+    .alerta-roja { background: linear-gradient(180deg, #FEF2F2, #FDECEC); border: 1px solid #F3C1BE; border-left: 4px solid var(--rojo); }
+    .alerta-roja strong { display: block; margin-bottom: .2rem; color: var(--rojo); }
+
+    /* PREGUNTAS */
+    .pregunta-box { background: var(--verde-lt); border: 1px solid #b5ceba; border-radius: var(--r-md); padding: .4rem 1.2rem; margin: 1.1rem 0; }
+    .pregunta-box p { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; font-size: .93rem; padding: .8rem 0; border-bottom: 1px solid #cde0d2; }
+    .pregunta-box p:last-child { border-bottom: none; }
+    .pregunta-box p strong { color: var(--verde); font-weight: 700; white-space: nowrap; }
+
+    /* SEP */
+    .sep { height: 1px; background: var(--brd); margin: 1.4rem 0; }
+
+    /* CIERRE */
+    .cierre { background: var(--blanco); border: 1px solid var(--brd); border-top: 4px solid var(--dorado); border-radius: 18px; padding: 2.4rem 1.8rem; text-align: center; margin-top: 1.5rem; box-shadow: var(--sh-md); }
+    .cierre-escudo { font-size: 2.6rem; margin-bottom: .8rem; display: block; }
+    .cierre h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--verde); margin-bottom: .6rem; }
+    .cierre p { font-size: .97rem; color: var(--txt-sm); max-width: 500px; margin: 0 auto .5rem; line-height: 1.7; }
+    .cierre p strong { color: var(--verde); }
+    .cierre-linea { width: 50px; height: 2px; background: var(--dorado); margin: 1.2rem auto; }
+    .cierre-nota { font-size: .82rem; color: #999; font-style: italic; }
+
+    /* CONTACTO */
+    .contacto { background: linear-gradient(160deg, var(--verde) 0%, #163a24 100%); border-radius: 18px; padding: 2.6rem 1.6rem; margin-top: 2rem; text-align: center; box-shadow: 0 16px 36px -16px rgba(26,66,38,.35); }
+    .contacto-logo { width: 64px; height: 64px; border-radius: 12px; border: 2px solid var(--dorado); object-fit: contain; background: var(--blanco); margin-bottom: 1.1rem; display: block; margin-left: auto; margin-right: auto; }
+    .contacto h3 { font-family: 'Playfair Display', serif; color: var(--dorado); font-size: 1.35rem; margin-bottom: .25rem; }
+    .contacto .tagline { font-size: .8rem; opacity: .6; margin-bottom: 1.6rem; letter-spacing: .07em; text-transform: uppercase; color: var(--blanco); }
+    .contacto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; max-width: 500px; margin: 0 auto 1.4rem; }
+    @media (max-width: 480px) { .contacto-grid { grid-template-columns: 1fr; } }
+    .c-item { background: rgba(255,255,255,.06); border: 1px solid rgba(201,168,76,.22); border-radius: var(--r-md); padding: .85rem 1rem; text-decoration: none; color: var(--blanco); font-size: .9rem; display: flex; align-items: center; gap: .7rem; transition: background .2s var(--ease), transform .15s var(--ease), border-color .2s var(--ease); }
+    .c-item:hover { background: rgba(255,255,255,.12); border-color: rgba(201,168,76,.4); transform: translateY(-1px); }
+    .c-item span { font-size: 1rem; width: 32px; height: 32px; border-radius: 9px; background: rgba(201,168,76,.16); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contacto-legal { font-size: .75rem; color: rgba(255,255,255,.4); margin-top: 1.2rem; line-height: 1.6; }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 1.5rem 1rem 2rem; font-size: .78rem; color: #aaa; line-height: 1.7; }
+    footer a { color: var(--verde-md); text-decoration: none; }
+
+    @media (max-width: 540px) { body { font-size: 16px; } .paso-body { padding: 1.1rem; } .paso-header { padding: 1rem 1.1rem; } }
+
+    /* BARRA DE PROGRESO */
+    .progreso-wrap { position: sticky; top: 0; z-index: 40; background: var(--blanco); border-bottom: 1px solid var(--brd); box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .progreso-track { height: 4px; background: var(--verde-lt); position: relative; }
+    .progreso-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--verde-md), var(--dorado)); transition: width .1s linear; }
+    .progreso-info { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .5rem 1rem; font-size: .78rem; font-weight: 600; color: var(--verde-md); }
+    .progreso-info .p-actual { color: var(--verde); font-weight: 700; }
+    .progreso-hint { color: var(--txt-sm); font-weight: 500; font-size: .74rem; display: none; }
+    @media (min-width: 480px) { .progreso-hint { display: inline; } }
+
+    /* FLOTANTES */
+    .flotantes { position: fixed; right: 1.1rem; bottom: 1.1rem; display: flex; flex-direction: column; gap: .7rem; z-index: 50; }
+    .fab { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(0,0,0,.22); text-decoration: none; font-size: 1.25rem; transition: transform .15s, box-shadow .2s; border: none; cursor: pointer; }
+    .fab:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.28); }
+    .fab-wa { background: #25D366; color: var(--blanco); }
+    .fab-top { background: var(--verde); color: var(--dorado); opacity: 0; pointer-events: none; transform: translateY(8px); }
+    .fab-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    @media print { .progreso-wrap, .flotantes, .banner-cursos, .seccion-cursos, .btn-wa, .doc-prep, .cam-modal { display: none !important; } body { background: #fff; } .paso { break-inside: avoid; box-shadow: none; } }
+
+    /* PREPARAR DOCUMENTO */
+    .doc-prep { margin-top: .7rem; }
+    .prep-toggle { display: flex; align-items: center; justify-content: space-between; gap: .6rem; width: 100%; background: var(--blanco); border: 1px dashed #bcd4c2; border-radius: var(--r-sm); padding: .55rem .85rem; font-size: .8rem; font-weight: 600; color: var(--verde-md); cursor: pointer; transition: background .15s var(--ease), border-color .15s var(--ease); }
+    .prep-toggle:hover { background: var(--verde-lt); border-color: var(--verde-md); }
+    .prep-toggle .prep-chevron { transition: transform .2s var(--ease); color: var(--txt-sm); flex-shrink: 0; }
+    .prep-toggle.abierto .prep-chevron { transform: rotate(180deg); }
+    .prep-toggle .prep-badge-listo { background: var(--verde); color: var(--blanco); font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: .15rem .5rem; border-radius: 100px; margin-left: .5rem; white-space: nowrap; }
+    .prep-panel { margin-top: .6rem; background: var(--fondo); border: 1px solid var(--brd); border-radius: var(--r-md); padding: 1rem 1.1rem 1.1rem; }
+    .prep-panel[hidden] { display: none; }
+    .prep-hint { font-size: .8rem; color: var(--txt-sm); line-height: 1.55; margin-bottom: .85rem; }
+    .prep-actions { display: flex; flex-wrap: wrap; gap: .55rem; }
+    .btn-mini { display: inline-flex; align-items: center; gap: .4rem; background: var(--blanco); color: var(--verde); border: 1px solid var(--brd); font-size: .78rem; font-weight: 600; padding: .5rem .85rem; border-radius: 100px; cursor: pointer; transition: background .15s var(--ease), border-color .15s var(--ease), transform .15s var(--ease); }
+    .btn-mini:hover { background: var(--verde-lt); border-color: var(--verde-md); transform: translateY(-1px); }
+    .btn-mini.prep-clear { color: var(--rojo); }
+    .btn-mini.prep-clear:hover { background: #FEF2F2; border-color: var(--rojo); }
+    .prep-thumbs { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .9rem; }
+    .prep-thumb { position: relative; width: 62px; height: 78px; border-radius: 8px; overflow: hidden; border: 1px solid var(--brd); background: var(--blanco); box-shadow: var(--sh-sm); }
+    .prep-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .prep-thumb .prep-thumb-num { position: absolute; bottom: 2px; left: 3px; font-size: .6rem; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.7); }
+    .prep-thumb .prep-thumb-del { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(20,30,20,.72); color: #fff; border: none; font-size: .65rem; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .prep-download { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; margin-top: 1rem; padding-top: .9rem; border-top: 1px dashed var(--brd); }
+    .prep-download[hidden] { display: none; }
+    .prep-count { font-size: .78rem; color: var(--txt-sm); }
+
+    /* MODAL CÁMARA */
+    .cam-modal { position: fixed; inset: 0; z-index: 200; background: rgba(10,15,10,.94); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 1.2rem; }
+    .cam-modal.activo { display: flex; }
+    .cam-modal video { max-width: 100%; max-height: 62vh; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,.5); background: #000; }
+    .cam-modal .cam-titulo { color: var(--blanco); font-size: .9rem; font-weight: 600; margin-bottom: 1rem; text-align: center; opacity: .9; }
+    .cam-modal .cam-controles { display: flex; align-items: center; gap: 1.4rem; margin-top: 1.4rem; }
+    .cam-btn { border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--blanco); transition: transform .15s var(--ease); }
+    .cam-btn:hover { transform: scale(1.06); }
+    .cam-btn-shot { width: 68px; height: 68px; border-radius: 50%; background: var(--blanco); border: 4px solid var(--dorado); box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+    .cam-btn-shot::after { content: ''; width: 52px; height: 52px; border-radius: 50%; background: var(--dorado); }
+    .cam-btn-flip, .cam-btn-close { width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+
+<!-- BARRA DE PROGRESO -->
+<div class="progreso-wrap" id="progresoWrap">
+  <div class="progreso-track"><div class="progreso-fill" id="progresoFill"></div></div>
+  <div class="progreso-info">
+    <span>Paso <span class="p-actual" id="pasoActual">–</span> de 11</span>
+    <span class="progreso-hint">Sigue los pasos en orden ↓</span>
+  </div>
+</div>
+
+<!-- BANNER CURSOS -->
+<div class="banner-cursos">
+  📚 Cursos disponibles en INASEP:
+  <a href="https://www.inasep.cl/curso-supervisor-online/" target="_blank">Supervisor de Seguridad Online</a>
+  ·
+  <a href="https://www.inasep.cl/curso-cctv-online/" target="_blank">Operador de Cámaras CCTV Online</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <img class="hero-logo" src="https://raw.githubusercontent.com/INASEP/GUIAINASEPSSVV/main/logo-inasep.png" alt="Logo INASEP"/>
+  <div class="hero-eyebrow">INASEP · Instituto de Capacitación en Seguridad Privada</div>
+  <h1>Guía de Acreditación<br/><em>Supervisor de Seguridad Privada</em></h1>
+  <p class="hero-desc">Instrucciones paso a paso para completar tu solicitud de autorización como Supervisor de Seguridad Privada ante la Subsecretaría de Prevención del Delito.</p>
+  <div class="hero-aviso">
+    📋 <strong>Esta es una guía de apoyo.</strong> Todos los pasos aquí descritos debes realizarlos directamente en la plataforma oficial: <strong>segprivada.minsegpublica.gob.cl</strong>
+  </div>
+</div>
+
+<!-- RESUMEN RÁPIDO -->
+<div class="resumen">
+  <div class="resumen-item"><div class="resumen-num">20–30 min</div><div class="resumen-label">Tiempo estimado del trámite</div></div>
+</div>
+
+<!-- SECCIÓN CURSOS -->
+<div class="seccion-cursos">
+  <div class="seccion-cursos-inner">
+    <h2>¿Ya eres alumno INASEP? Continúa creciendo</h2>
+    <p>Como ex alumno, accedes a <strong>precio preferencial</strong> en nuestros cursos online. Consúltanos directamente por WhatsApp.</p>
+    <div class="cursos-grid">
+      <a class="curso-card" href="https://www.inasep.cl/curso-supervisor-online/" target="_blank">
+        <span class="curso-tag">🎖️ Online</span>
+        <h3>Supervisor de Seguridad Privada</h3>
+        <p>Amplía tus competencias y accede a cargos de mayor responsabilidad en el rubro.</p>
+      </a>
+      <a class="curso-card" href="https://www.inasep.cl/curso-cctv-online/" target="_blank">
+        <span class="curso-tag">📷 Online</span>
+        <h3>Operador de Cámaras de Televigilancia (CCTV)</h3>
+        <p>Especialízate en sistemas de vigilancia y abre nuevas oportunidades laborales.</p>
+      </a>
+    </div>
+    <a class="btn-wa" href="https://wa.me/56944061866?text=Hola%20INASEP%2C%20soy%20ex%20alumno%20y%20quiero%20consultar%20sobre%20precio%20preferencial%20en%20cursos." target="_blank">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Consultar precio preferencial
+      <span class="btn-wa-sub">Respuesta rápida · +56 9 4406 1866</span>
+    </a>
+  </div>
+</div>
+
+<!-- PASOS -->
+<div class="container">
+  <div class="section-label"><span>Pasos del proceso</span></div>
+
+  <!-- PASO 1 -->
+  <div class="paso" id="paso-1">
+    <div class="paso-header">
+      <div class="paso-num">1</div>
+      <div class="paso-titles">
+        <div class="paso-title">Ingresa a la Plataforma SPD</div>
+        <div class="paso-subtitle">segprivada.minsegpublica.gob.cl</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <p class="instruccion">Abre tu navegador e ingresa a: <strong><a href="https://segprivada.minsegpublica.gob.cl/" target="_blank">https://segprivada.minsegpublica.gob.cl/</a></strong><br/>Haz clic en el botón <strong>"Iniciar Sesión"</strong>, ubicado en la parte superior derecha.</p>
+    </div>
+  </div>
+
+  <!-- PASO 2 -->
+  <div class="paso" id="paso-2">
+    <div class="paso-header">
+      <div class="paso-num">2</div>
+      <div class="paso-titles">
+        <div class="paso-title">Ingresa con tu ClaveÚnica</div>
+        <div class="paso-subtitle">Luego selecciona "Acceder con correo"</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <p class="instruccion">Escribe tu <strong>RUN</strong> y tu <strong>ClaveÚnica</strong>, luego haz clic en <strong>"Ingresa"</strong>. Si aún no tienes ClaveÚnica, puedes solicitarla desde la misma pantalla. Tras ingresar, selecciona <strong>"Acceder con correo"</strong>.</p>
+    </div>
+  </div>
+
+  <!-- PASO 3 -->
+  <div class="paso" id="paso-3">
+    <div class="paso-header">
+      <div class="paso-num">3</div>
+      <div class="paso-titles">
+        <div class="paso-title">Verifica tu identidad con el código de seguridad</div>
+        <div class="paso-subtitle">Código de 6 caracteres enviado a tu correo</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <p class="instruccion">Revisa tu correo electrónico — recibirás un <strong>código de 6 caracteres</strong>. Ingrésalo y haz clic en <strong>"Verificar"</strong>. Luego, en el menú principal, selecciona <strong>"Personas Naturales"</strong>.</p>
+    </div>
+  </div>
+
+  <!-- PASO 4 -->
+  <div class="paso" id="paso-4">
+    <div class="paso-header">
+      <div class="paso-num">4</div>
+      <div class="paso-titles">
+        <div class="paso-title">Elige "Supervisor de Seguridad Privada" e Inicia la Solicitud</div>
+        <div class="paso-subtitle">Solicitudes de Personas Naturales</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <p class="instruccion">En la pantalla de <strong>Solicitudes de Personas Naturales</strong>, haz clic en <strong>"Supervisor de Seguridad Privada"</strong>. Baja al final de la página, lee las consideraciones del trámite y haz clic en <strong>"Iniciar Solicitud de Autorización"</strong>.</p>
+    </div>
+  </div>
+
+  <!-- PASO 5 -->
+  <div class="paso" id="paso-5">
+    <div class="paso-header">
+      <div class="paso-num">5</div>
+      <div class="paso-titles">
+        <div class="paso-title">Completa los datos de Capacitación y Formación</div>
+        <div class="paso-subtitle">Preguntas previas antes de continuar</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <p class="instruccion">En esta pantalla responde las cuatro preguntas que aparecen sobre tu situación en las Fuerzas Armadas, servicio militar, inhabilidades y autorización vigente. Selecciona <strong>Sí o No</strong> según corresponda en cada caso.</p>
+      <div class="alerta">
+        <strong>📌 Atención — primera vez</strong>
+        Si es tu primera autorización bajo la nueva Ley 21.659 SPD, selecciona <strong>No</strong> en "¿Cuenta con autorización vigente de la actividad?"
+      </div>
+      <div class="captura">
+        <img src="https://raw.githubusercontent.com/INASEP/GUIAINASEPSSVV/main/IMAGEN%2001.png" alt="Pantalla de capacitación y formación - Supervisor de Seguridad Privada" loading="lazy"/>
+        <div class="captura-label">Captura 1 — Capacitación y formación · Supervisor</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 6 -->
+  <div class="paso" id="paso-6">
+    <div class="paso-header">
+      <div class="paso-num">6</div>
+      <div class="paso-titles">
+        <div class="paso-title">Sube los documentos — Sección "Datos Cívicos"</div>
+        <div class="paso-subtitle">Cédula de identidad y certificado de residencia</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <div class="alerta-roja">
+        <strong>🚫 No excedas el tamaño máximo indicado en cada campo</strong>
+        Toma las fotografías en <strong>resolución media</strong> y sube únicamente los documentos solicitados.
+      </div>
+      <ul class="docs-list">
+        <li class="obl" data-doc-id="1">
+          <div class="doc-row">
+            <span class="docs-icon">🪪</span>
+            <div class="doc-info">
+              <div class="doc-name">Copia de cédula de identidad por ambos lados (Vigente)</div>
+              <div class="doc-desc">Formato: jpeg, jpg, pdf, png · Tamaño máximo: 3 MB</div>
+            </div>
+            <span class="badge-o">Obligatorio</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(1, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-1" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-1" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(1)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(1)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-1" onclick="clearPrep(1)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-1"></div>
+              <div class="prep-download" id="prepDownload-1" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(1)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-1"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="opt" data-doc-id="2">
+          <div class="doc-row">
+            <span class="docs-icon">📄</span>
+            <div class="doc-info">
+              <div class="doc-name">Certificado de residencia definitiva</div>
+              <div class="doc-desc">Solo para extranjeros · Formato: jpeg, jpg, pdf, png · Máximo 5 MB</div>
+            </div>
+            <span class="badge-p">Solo extranjeros</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(2, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-2" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-2" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(2)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(2)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-2" onclick="clearPrep(2)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-2"></div>
+              <div class="prep-download" id="prepDownload-2" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(2)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-2"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="captura">
+        <img src="https://raw.githubusercontent.com/INASEP/GUIAINASEPSSVV/main/IMAGEN%2002.png" alt="Sección Datos Cívicos - Supervisor de Seguridad Privada" loading="lazy"/>
+        <div class="captura-label">Captura 2 — Datos Cívicos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 7 -->
+  <div class="paso" id="paso-7">
+    <div class="paso-header">
+      <div class="paso-num">7</div>
+      <div class="paso-titles">
+        <div class="paso-title">Sección "Condiciones Físicas y Psíquicas"</div>
+        <div class="paso-subtitle">Certificados médico y psicológico</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <p class="instruccion">Sube los dos certificados que se describen a continuación. Asegúrate de que cada uno contenga <strong>exactamente la redacción indicada</strong>:</p>
+      <div class="alerta">
+        <strong>⏳ Ambos certificados deben tener una vigencia máxima de 6 meses</strong>
+        Si tu certificado médico o psicológico fue emitido hace más de 6 meses, la plataforma podría rechazarlo. Solicita uno reciente antes de continuar.
+      </div>
+      <ul class="docs-list">
+        <li class="obl" data-doc-id="3">
+          <div class="doc-row">
+            <span class="docs-icon">🏥</span>
+            <div class="doc-info">
+              <div class="doc-name">Certificado salud física compatible</div>
+              <div class="doc-desc">Emisión no superior a 6 meses · Debe indicar: <em>"salud compatible para desempeñarse en funciones de seguridad privada"</em><br/>Formato: jpeg, jpg, pdf, png · Máximo 5 MB</div>
+            </div>
+            <span class="badge-o">Obligatorio</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(3, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-3" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-3" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(3)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(3)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-3" onclick="clearPrep(3)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-3"></div>
+              <div class="prep-download" id="prepDownload-3" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(3)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-3"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="obl" data-doc-id="4">
+          <div class="doc-row">
+            <span class="docs-icon">🧠</span>
+            <div class="doc-info">
+              <div class="doc-name">Certificado salud psíquica compatible</div>
+              <div class="doc-desc">Emisión no superior a 6 meses · Debe indicar: <em>"condiciones psíquicas compatibles y adecuadas para el desempeño de funciones en el ámbito de la Seguridad Privada"</em><br/>Formato: jpeg, jpg, pdf, png · Máximo 5 MB</div>
+            </div>
+            <span class="badge-o">Obligatorio</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(4, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-4" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-4" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(4)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(4)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-4" onclick="clearPrep(4)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-4"></div>
+              <div class="prep-download" id="prepDownload-4" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(4)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-4"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="captura">
+        <img src="https://raw.githubusercontent.com/INASEP/GUIAINASEPSSVV/main/IMAGEN%2003.png" alt="Sección Condiciones físicas y psíquicas - Supervisor" loading="lazy"/>
+        <div class="captura-label">Captura 3 — Condiciones físicas y psíquicas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 8 -->
+  <div class="paso" id="paso-8">
+    <div class="paso-header">
+      <div class="paso-num">8</div>
+      <div class="paso-titles">
+        <div class="paso-title">Sección "Formación"</div>
+        <div class="paso-subtitle">Certificado de estudios, curso de supervisión y situación militar</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <ul class="docs-list">
+        <li class="obl" data-doc-id="5">
+          <div class="doc-row">
+            <span class="docs-icon">🎓</span>
+            <div class="doc-info">
+              <div class="doc-name">Certificado de estudios</div>
+              <div class="doc-desc">Descárgalo desde <a href="https://certificados.mineduc.cl/mvc/home/index" target="_blank" style="color:var(--verde-md)">certificados.mineduc.cl</a> · Formato: jpeg, jpg, pdf, png · Máximo 5 MB</div>
+            </div>
+            <span class="badge-o">Obligatorio</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(5, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-5" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-5" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(5)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(5)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-5" onclick="clearPrep(5)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-5"></div>
+              <div class="prep-download" id="prepDownload-5" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(5)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-5"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="obl" data-doc-id="6">
+          <div class="doc-row">
+            <span class="docs-icon">📋</span>
+            <div class="doc-info">
+              <div class="doc-name">Curso para desarrollar labores de supervisión y control</div>
+              <div class="doc-desc">Demostrable mediante los requisitos establecidos en los incisos 1, 2, 3, 4 o 5 del artículo 108 del Decreto 209 · Formato: jpeg, jpg, pdf, png · Máximo 10 MB</div>
+            </div>
+            <span class="badge-o">Obligatorio</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(6, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-6" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-6" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(6)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(6)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-6" onclick="clearPrep(6)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-6"></div>
+              <div class="prep-download" id="prepDownload-6" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(6)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-6"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="opt" data-doc-id="7">
+          <div class="doc-row">
+            <span class="docs-icon">🎖️</span>
+            <div class="doc-info">
+              <div class="doc-name">Situación militar al día</div>
+              <div class="doc-desc">Varones: obligatorio / Mujeres: opcional · Formato: jpeg, jpg, pdf, png · Máximo 5 MB</div>
+            </div>
+            <span class="badge-p">Varones: Obligatorio</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(7, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-7" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-7" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(7)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(7)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-7" onclick="clearPrep(7)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-7"></div>
+              <div class="prep-download" id="prepDownload-7" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(7)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-7"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="captura">
+        <img src="https://raw.githubusercontent.com/INASEP/GUIAINASEPSSVV/main/IMAGEN%2004.png" alt="Sección Formación - Supervisor de Seguridad Privada" loading="lazy"/>
+        <div class="captura-label">Captura 4 — Formación</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 9 -->
+  <div class="paso" id="paso-9">
+    <div class="paso-header">
+      <div class="paso-num">9</div>
+      <div class="paso-titles">
+        <div class="paso-title">Sección "Competencia"</div>
+        <div class="paso-subtitle">Antecedentes y declaraciones juradas</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <p class="instruccion">En esta sección deberás adjuntar los siguientes documentos. La plataforma indica descargar el formato de <strong>Declaración Jurada Única</strong> desde el enlace que aparece en pantalla.</p>
+      <ul class="docs-list">
+        <li class="obl" data-doc-id="8">
+          <div class="doc-row">
+            <span class="docs-icon">🔍</span>
+            <div class="doc-info">
+              <div class="doc-name">Certificado de antecedentes para fines especiales</div>
+              <div class="doc-desc">Idealmente del mismo día de la solicitud · Solo formato PDF · Máximo 1 MB<br/>Obtenible en <a href="https://www.registrocivil.cl" target="_blank" style="color:var(--verde-md)">registrocivil.cl</a></div>
+            </div>
+            <span class="badge-o">Obligatorio</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(8, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-8" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-8" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(8)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(8)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-8" onclick="clearPrep(8)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-8"></div>
+              <div class="prep-download" id="prepDownload-8" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(8)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-8"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="obl" data-doc-id="9">
+          <div class="doc-row">
+            <span class="docs-icon">📝</span>
+            <div class="doc-info">
+              <div class="doc-name">Declaración Jurada Única</div>
+              <div class="doc-desc">Formato: jpeg, jpg, pdf, png · Máximo 5 MB</div>
+              <a class="btn-dl" href="https://docs.google.com/document/d/1DUPi5_7vAmLUvVoTIeYWmSmyLuWvz5Iu/export?format=docx" target="_blank" download>⬇ Descargar formulario</a>
+              <a class="btn-firma" href="firma-dj.html?doc=art46-6" target="_blank">✍️ Firmar en línea</a>
+            </div>
+            <span class="badge-o">Obligatorio</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(9, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-9" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-9" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(9)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(9)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-9" onclick="clearPrep(9)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-9"></div>
+              <div class="prep-download" id="prepDownload-9" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(9)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-9"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="opt" data-doc-id="10">
+          <div class="doc-row">
+            <span class="docs-icon">🏛️</span>
+            <div class="doc-info">
+              <div class="doc-name">Art. 46, N° 7 Ley 21.659 — Certificado Institucional #1 (ex miembros FFAA, FFOO y Gendarmería)</div>
+              <div class="doc-desc">Solo formato PDF · Máximo 10 MB</div>
+            </div>
+            <span class="badge-p">Opcional</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(10, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-10" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-10" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(10)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(10)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-10" onclick="clearPrep(10)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-10"></div>
+              <div class="prep-download" id="prepDownload-10" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(10)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-10"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="opt" data-doc-id="11">
+          <div class="doc-row">
+            <span class="docs-icon">🏅</span>
+            <div class="doc-info">
+              <div class="doc-name">Art. 46, N° 10 Ley 21.659 — Certificado Institucional #2 (ex miembros FFAA, FFOO y Gendarmería)</div>
+              <div class="doc-desc">Solo formato PDF · Máximo 10 MB</div>
+            </div>
+            <span class="badge-p">Opcional</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(11, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-11" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-11" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(11)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(11)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-11" onclick="clearPrep(11)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-11"></div>
+              <div class="prep-download" id="prepDownload-11" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(11)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-11"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="captura">
+        <img src="https://raw.githubusercontent.com/INASEP/GUIAINASEPSSVV/main/IMAGEN%2005.png" alt="Sección Competencia - Supervisor de Seguridad Privada" loading="lazy"/>
+        <div class="captura-label">Captura 5 — Competencia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 10 -->
+  <div class="paso" id="paso-10">
+    <div class="paso-header">
+      <div class="paso-num">10</div>
+      <div class="paso-titles">
+        <div class="paso-title">Sección "Capacitación"</div>
+        <div class="paso-subtitle">Certificado de aprobación de curso VVPP o GGSS</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <div class="alerta">
+        <strong>📧 ¿Dónde está el certificado de aprobación?</strong>
+        Es el correo electrónico de notificación de aprobación que la SPD envió directamente a tu casilla. En caso de no tenerlo, puedes descargarlo desde: <strong><a href="https://segprivada.minsegpublica.gob.cl/descargar-documentos" target="_blank">https://segprivada.minsegpublica.gob.cl/descargar-documentos/</a></strong>
+      </div>
+      <ul class="docs-list">
+        <li class="opt" data-doc-id="12">
+          <div class="doc-row">
+            <span class="docs-icon">📧</span>
+            <div class="doc-info">
+              <div class="doc-name">Certificado aprobación curso de Formación VVPP o GGSS</div>
+              <div class="doc-desc">Obligatorio para efectos de acreditar experiencia y menor carga horaria en capacitación de supervisión y control · Formato: jpeg, jpg, pdf, png · Máximo 5 MB</div>
+            </div>
+            <span class="badge-p">Opcional</span>
+          </div>
+          <div class="doc-prep">
+            <button type="button" class="prep-toggle" onclick="togglePrep(12, this)">
+              <span>📎 ¿Necesitas ayuda para prepararlo? Fotografíalo o súbelo aquí<span class="prep-badge-listo" id="prepBadge-12" hidden></span></span>
+              <span class="prep-chevron">▾</span>
+            </button>
+            <div class="prep-panel" id="prepPanel-12" hidden>
+              <p class="prep-hint">Fotografía el documento con la cámara, o sube una foto desde tu <strong>galería</strong>. Armamos un <strong>PDF liviano</strong> que puedes descargar y subir en la plataforma SPD. Todo ocurre en tu dispositivo — no se envía nada a ninguna parte.</p>
+              <div class="prep-actions">
+                <button type="button" class="btn-mini" onclick="openCam(12)">📷 Cámara</button>
+                <button type="button" class="btn-mini" onclick="trigImg(12)">🖼️ Subir desde galería</button>
+                <button type="button" class="btn-mini prep-clear" id="prepClearBtn-12" onclick="clearPrep(12)" hidden>🗑 Limpiar</button>
+              </div>
+              <div class="prep-thumbs" id="prepThumbs-12"></div>
+              <div class="prep-download" id="prepDownload-12" hidden>
+                <button type="button" class="btn-dl" onclick="generarPrepPdf(12)">📥 Descargar PDF liviano</button>
+                <span class="prep-count" id="prepCount-12"></span>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="captura">
+        <img src="https://raw.githubusercontent.com/INASEP/GUIAINASEPSSVV/main/IMAGEN%2006.png" alt="Sección Capacitación - Supervisor de Seguridad Privada" loading="lazy"/>
+        <div class="captura-label">Captura 6 — Capacitación</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 11 -->
+  <div class="paso" id="paso-11">
+    <div class="paso-header">
+      <div class="paso-num">11</div>
+      <div class="paso-titles">
+        <div class="paso-title">Acepta los términos y Envía la Solicitud</div>
+        <div class="paso-subtitle">Último paso — sección "Enviar"</div>
+      </div>
+    </div>
+    <div class="paso-body">
+      <p class="instruccion">Lee con atención la declaración de responsabilidad que aparece en pantalla. Marca la casilla <strong>"Aceptar"</strong> y haz clic en el botón <strong>"Seleccione aceptar"</strong> / <strong>"Enviar"</strong>.</p>
+      <div class="captura">
+        <img src="https://raw.githubusercontent.com/INASEP/GUIAINASEPSSVV/main/IMAGEN%2007.png" alt="Pantalla de envío final y declaración jurada - Supervisor" loading="lazy"/>
+        <div class="captura-label">Captura 7 — Declaración jurada y envío final</div>
+      </div>
+      <div class="alerta">
+        <strong>💾 Descarga tu comprobante antes de cerrar la página</strong>
+        Una vez enviada la solicitud, la plataforma mostrará un comprobante de trámite iniciado. Descárgalo y guárdalo en un lugar seguro — es tu respaldo oficial.
+      </div>
+    </div>
+  </div>
+
+  <!-- CIERRE -->
+  <div class="cierre">
+    <span class="cierre-escudo">🛡️</span>
+    <h3>Tu solicitud ha sido enviada</h3>
+    <div class="cierre-linea"></div>
+    <p>Has completado todos los pasos de tu acreditación como <strong>Supervisor de Seguridad Privada</strong> ante la Subsecretaría de Prevención del Delito. <strong>El tiempo de respuesta depende exclusivamente de la SPD</strong>, quien revisará tu documentación y te notificará al correo registrado.</p>
+    <p style="margin-top:.8rem">Desde <strong>INASEP</strong> te deseamos mucho éxito en esta nueva etapa de tu carrera en seguridad privada. Fue un honor acompañarte en tu formación.</p>
+    <div class="cierre-linea"></div>
+    <p class="cierre-nota">Guía elaborada por INASEP SpA · Instituto de Capacitación en Seguridad Privada · Quilpué, Valparaíso</p>
+  </div>
+
+  <!-- CONTACTO -->
+  <div class="contacto">
+    <img class="contacto-logo" src="https://raw.githubusercontent.com/INASEP/GUIAINASEPSSVV/main/logo-inasep.png" alt="INASEP"/>
+    <h3>INASEP SpA</h3>
+    <p class="tagline">Instituto de Capacitación en Seguridad Privada · OTEC Acreditado</p>
+    <div class="contacto-grid">
+      <a class="c-item" href="https://wa.me/56944061866" target="_blank">
+        <span>💬</span> +56 9 4406 1866
+      </a>
+      <a class="c-item" href="mailto:instituto@inasep.cl">
+        <span>✉️</span> instituto@inasep.cl
+      </a>
+      <a class="c-item" href="https://www.inasep.cl" target="_blank">
+        <span>🌐</span> www.inasep.cl
+      </a>
+      <a class="c-item" href="https://maps.google.com/?q=Aníbal+Pinto+875+Quilpué" target="_blank">
+        <span>📍</span> Aníbal Pinto 875, Quilpué
+      </a>
+    </div>
+    <p class="contacto-legal">
+      Autorizado por la Subsecretaría de Prevención del Delito (SPD) y OS10 · Carabineros de Chile<br/>
+      Ley N° 21.659 · Certificación NCh 2728:2015
+    </p>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  Guía elaborada por <a href="https://www.inasep.cl" target="_blank">INASEP SpA</a> · Quilpué, Valparaíso, Chile.<br/>
+  Esta es una guía de apoyo con fines informativos. Los procesos de la plataforma SPD pueden cambiar sin previo aviso.<br/>
+  Para realizar el trámite ingresa directamente a <a href="https://segprivada.minsegpublica.gob.cl/" target="_blank">segprivada.minsegpublica.gob.cl</a>
+</footer>
+
+<!-- MODAL CÁMARA -->
+<div class="cam-modal" id="camModal">
+  <div class="cam-titulo" id="camDocName">Fotografiar documento</div>
+  <video id="videoEl" autoplay playsinline muted></video>
+  <canvas id="snapCanvas" style="display:none"></canvas>
+  <div class="cam-controles">
+    <button class="cam-btn cam-btn-flip" id="btnFlip" aria-label="Cambiar cámara">🔄</button>
+    <button class="cam-btn cam-btn-shot" id="btnCapture" aria-label="Tomar foto"></button>
+    <button class="cam-btn cam-btn-close" id="btnCloseCam" aria-label="Cerrar cámara">✕</button>
+  </div>
+</div>
+<input type="file" id="prepImgInput" accept="image/*" multiple style="display:none"/>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="cerrarLightbox()">
+  <button class="lightbox-cerrar" aria-label="Cerrar" onclick="cerrarLightbox(event)">✕</button>
+  <img id="lightboxImg" src="" alt=""/>
+</div>
+
+<!-- BOTONES FLOTANTES -->
+<div class="flotantes">
+  <button class="fab fab-top" id="fabTop" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <a class="fab fab-wa" href="https://wa.me/56944061866?text=Hola%20INASEP%2C%20tengo%20una%20duda%20con%20mi%20acreditaci%C3%B3n%20de%20Supervisor%20SPD" target="_blank" aria-label="Consultar por WhatsApp">💬</a>
+</div>
+
+<script>
+  (function () {
+    var pasos = Array.from(document.querySelectorAll('.paso'));
+    var fill = document.getElementById('progresoFill');
+    var pasoActual = document.getElementById('pasoActual');
+    var fabTop = document.getElementById('fabTop');
+
+    function actualizar() {
+      var scrollTop = window.scrollY;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+      fill.style.width = pct + '%';
+      fabTop.classList.toggle('visible', scrollTop > 500);
+      var actual = null;
+      pasos.forEach(function (p, i) {
+        var rect = p.getBoundingClientRect();
+        if (rect.top <= 160) actual = i + 1;
+      });
+      pasoActual.textContent = actual || '–';
+    }
+
+    window.addEventListener('scroll', actualizar, { passive: true });
+    window.addEventListener('resize', actualizar);
+    actualizar();
+
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightboxImg');
+    document.querySelectorAll('.captura img').forEach(function (img) {
+      img.addEventListener('click', function () {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('abierto');
+      });
+    });
+    window.cerrarLightbox = function (e) {
+      if (e) e.stopPropagation();
+      lightbox.classList.remove('abierto');
+    };
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') cerrarLightbox();
+    });
+
+    var sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if ('IntersectionObserver' in window && !sinMovimiento) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('oculto');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+      pasos.forEach(function (p) {
+        p.classList.add('oculto');
+        observer.observe(p);
+      });
+    }
+  })();
+</script>
+
+<script>
+  var prepDocs = {};
+  var activeCamDoc = null;
+  var pendingPrepDoc = null;
+  var camStream = null;
+  var facingMode = 'environment';
+
+  function nombreDoc(id) {
+    var li = document.querySelector('li[data-doc-id="' + id + '"] .doc-name');
+    return li ? li.textContent.trim() : ('documento-' + id);
+  }
+
+  function togglePrep(id, btn) {
+    var panel = document.getElementById('prepPanel-' + id);
+    var abrir = panel.hasAttribute('hidden');
+    panel.toggleAttribute('hidden', !abrir);
+    btn.classList.toggle('abierto', abrir);
+  }
+
+  function renderPrepThumbs(id) {
+    var pages = prepDocs[id] || [];
+    var thumbs = document.getElementById('prepThumbs-' + id);
+    var dl = document.getElementById('prepDownload-' + id);
+    var count = document.getElementById('prepCount-' + id);
+    var clearBtn = document.getElementById('prepClearBtn-' + id);
+    var badge = document.getElementById('prepBadge-' + id);
+
+    thumbs.innerHTML = pages.map(function (src, i) {
+      return '<div class="prep-thumb"><img src="' + src + '" alt="Página ' + (i + 1) + '"/>' +
+        '<span class="prep-thumb-num">' + (i + 1) + '</span>' +
+        '<button type="button" class="prep-thumb-del" onclick="removePrepPage(' + id + ',' + i + ')" aria-label="Eliminar página">✕</button></div>';
+    }).join('');
+
+    var hay = pages.length > 0;
+    dl.toggleAttribute('hidden', !hay);
+    clearBtn.toggleAttribute('hidden', !hay);
+    badge.toggleAttribute('hidden', !hay);
+    if (hay) badge.textContent = '✓ ' + pages.length + (pages.length === 1 ? ' pág.' : ' págs.');
+    count.textContent = hay ? pages.length + (pages.length === 1 ? ' página lista' : ' páginas listas') : '';
+  }
+
+  function removePrepPage(id, idx) {
+    prepDocs[id].splice(idx, 1);
+    renderPrepThumbs(id);
+  }
+
+  function clearPrep(id) {
+    prepDocs[id] = [];
+    renderPrepThumbs(id);
+    toastPrep('Páginas eliminadas');
+  }
+
+  function toastPrep(msg) {
+    var t = document.createElement('div');
+    t.textContent = msg;
+    t.style.cssText = 'position:fixed;left:50%;bottom:5.5rem;transform:translateX(-50%);background:var(--verde);color:#fff;padding:.6rem 1.1rem;border-radius:100px;font-size:.82rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:300;transition:opacity .3s;';
+    document.body.appendChild(t);
+    setTimeout(function () { t.style.opacity = '0'; }, 1600);
+    setTimeout(function () { t.remove(); }, 2000);
+  }
+
+  function openCam(id) {
+    activeCamDoc = id;
+    document.getElementById('camDocName').textContent = 'Fotografiando: ' + nombreDoc(id);
+    startStream();
+  }
+
+  async function startStream() {
+    try {
+      if (camStream) camStream.getTracks().forEach(function (t) { t.stop(); });
+      camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facingMode }, audio: false });
+      document.getElementById('videoEl').srcObject = camStream;
+      document.getElementById('camModal').classList.add('activo');
+    } catch (err) {
+      toastPrep('No se pudo acceder a la cámara');
+    }
+  }
+
+  document.getElementById('btnCapture').addEventListener('click', function () {
+    var v = document.getElementById('videoEl'), c = document.getElementById('snapCanvas');
+    c.width = v.videoWidth; c.height = v.videoHeight;
+    c.getContext('2d').drawImage(v, 0, 0);
+    if (!prepDocs[activeCamDoc]) prepDocs[activeCamDoc] = [];
+    prepDocs[activeCamDoc].push(c.toDataURL('image/jpeg', 0.9));
+    renderPrepThumbs(activeCamDoc);
+    toastPrep('📸 Foto añadida');
+  });
+
+  document.getElementById('btnFlip').addEventListener('click', function () {
+    facingMode = facingMode === 'environment' ? 'user' : 'environment';
+    startStream();
+  });
+
+  document.getElementById('btnCloseCam').addEventListener('click', function () {
+    if (camStream) { camStream.getTracks().forEach(function (t) { t.stop(); }); camStream = null; }
+    document.getElementById('camModal').classList.remove('activo');
+  });
+
+  function trigImg(id) {
+    pendingPrepDoc = id;
+    var f = document.getElementById('prepImgInput');
+    f.value = ''; f.click();
+  }
+  document.getElementById('prepImgInput').addEventListener('change', function (e) {
+    var files = Array.from(e.target.files).filter(function (f) { return f.type.startsWith('image/'); });
+    if (!files.length) return;
+    var id = pendingPrepDoc, done = 0;
+    if (!prepDocs[id]) prepDocs[id] = [];
+    files.forEach(function (f) {
+      var r = new FileReader();
+      r.onload = function (ev) {
+        prepDocs[id].push(ev.target.result);
+        if (++done === files.length) { renderPrepThumbs(id); toastPrep(files.length + (files.length !== 1 ? ' imágenes añadidas' : ' imagen añadida')); }
+      };
+      r.readAsDataURL(f);
+    });
+  });
+
+  async function generarPrepPdf(id) {
+    var pages = prepDocs[id] || [];
+    if (!pages.length) return;
+    try {
+      var jsPDF = window.jspdf.jsPDF;
+      var pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      var pW = 210, pH = 297;
+      for (var i = 0; i < pages.length; i++) {
+        if (i > 0) pdf.addPage();
+        var img = new Image(); img.src = pages[i];
+        await new Promise(function (r) { img.onload = r; });
+        var ia = img.width / img.height, pa = pW / pH, dW, dH, x, y;
+        if (ia > pa) { dW = pW; dH = pW / ia; x = 0; y = (pH - dH) / 2; }
+        else { dH = pH; dW = pH * ia; x = (pW - dW) / 2; y = 0; }
+        pdf.addImage(pages[i], pages[i].indexOf('image/png') > -1 ? 'PNG' : 'JPEG', x, y, dW, dH, undefined, 'FAST');
+      }
+      var slug = nombreDoc(id).toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      pdf.save((slug || 'documento') + '.pdf');
+      toastPrep('✅ PDF listo (' + pages.length + (pages.length === 1 ? ' página)' : ' páginas)'));
+    } catch (err) {
+      console.error(err);
+      toastPrep('Error al generar el PDF');
+    }
+  }
+</script>
+
+</body>
+</html>
